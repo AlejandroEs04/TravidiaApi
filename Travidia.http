@@ -1,0 +1,6 @@
+@Travidia_HostAddress = http://localhost:5088
+
+GET {{Travidia_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

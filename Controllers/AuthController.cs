@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Travidia.Dtos;
 using Travidia.Models;
@@ -5,6 +6,7 @@ using Travidia.Utils;
 
 namespace Travidia.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class AuthController(IConfiguration config) : ControllerBase
@@ -12,6 +14,7 @@ public class AuthController(IConfiguration config) : ControllerBase
     private readonly DataContextDapper _dapper = new(config);
     private readonly AuthHelper _authHelper = new(config);
 
+    [AllowAnonymous]
     [HttpPost]
     public IActionResult Login(AuthDto auth)
     {

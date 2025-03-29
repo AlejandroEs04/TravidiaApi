@@ -86,3 +86,4 @@ C:\Users\2004e\Desktop\Development\2. Software Development\Travidia\bin\Debug\ne
 C:\Users\2004e\Desktop\Development\2. Software Development\Travidia\bin\Debug\net9.0\Swashbuckle.AspNetCore.Swagger.dll
 C:\Users\2004e\Desktop\Development\2. Software Development\Travidia\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerGen.dll
 C:\Users\2004e\Desktop\Development\2. Software Development\Travidia\bin\Debug\net9.0\Swashbuckle.AspNetCore.SwaggerUI.dll
+C:\Users\2004e\Desktop\Development\2. Software Development\Travidia\obj\Debug\net9.0\Travidia.sourcelink.json

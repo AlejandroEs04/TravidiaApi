@@ -1,4 +1,5 @@
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Travidia.Dtos;
@@ -7,6 +8,7 @@ using Travidia.Utils;
 
 namespace Travidia.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class UserController(IConfiguration config) : ControllerBase

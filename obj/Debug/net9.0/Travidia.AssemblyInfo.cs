@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Travidia")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+ae4b7cdd7eef33db0c3b9cee67b670d3e522e0f6")]
 [assembly: System.Reflection.AssemblyProductAttribute("Travidia")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Travidia")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

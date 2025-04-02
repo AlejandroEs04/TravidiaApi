@@ -8,4 +8,5 @@ public class Trip
     public string Destiny { get; set; } = "";
     public string Origin { get; set; } = "";
     public string Purpose { get; set; } = "";
+    public int StatusId { get; set; }
 }

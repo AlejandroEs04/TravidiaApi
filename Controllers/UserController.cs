@@ -17,9 +17,9 @@ public class UserController(IConfiguration config) : ControllerBase
     private readonly AuthHelper _authHelper = new (config);
 
     [HttpGet]
-    public IEnumerable<User> GetUsers()
+    public IEnumerable<UserDto> GetUsers()
     {
-        var users = _dapper.Query<User>("SELECT * FROM [User]");
+        var users = _dapper.Query<UserDto>("SELECT * FROM [User]");
         return users;
     }
 
@@ -42,10 +42,11 @@ public class UserController(IConfiguration config) : ControllerBase
                 @rolId = user.RolId,
                 @departmentId = user.DepartmentId,
                 passwordHash,
-                passwordSalt
+                passwordSalt, 
+                @supervisorId = user.SupervisorId
             };
 
-            _dapper.Execute("Spu_UserUpset", parameters);
+            _dapper.Execute("Spu_UserUpsert", parameters);
 
             return Ok();
         }
@@ -53,5 +54,71 @@ public class UserController(IConfiguration config) : ControllerBase
         {
             throw;
         }
+    }
+
+    [HttpPut("{userId}")]
+    public IActionResult UpdateUser(int userId, UpdateUserDto user)
+    {
+        try
+        {
+            var parameters = new 
+            {
+                @id = userId,
+                @fullName = user.FullName,
+                @email = user.Email,
+                @rolId = user.RolId,
+                @departmentId = user.DepartmentId, 
+                @supervisorId = user.SupervisorId
+            };
+
+            _dapper.Execute("Spu_UserUpsert", parameters);
+
+            if(user.Password.Length > 0) UpdatePassword(user.Password, userId);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
+        return Ok();
+    }
+
+    [HttpDelete("{userId}")]
+    public IActionResult DeleteUser(int userId)
+    {
+        try
+        {
+            var parameters = new 
+            {
+                @id = userId,
+                @active = false
+            };
+
+            _dapper.Execute("Spu_UserUpsert", parameters);
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
+        return Ok();
+    }
+
+    protected void UpdatePassword(string password, int userId)
+    {
+        byte[] passwordSalt = new byte[129/8];
+        using (RandomNumberGenerator rng = RandomNumberGenerator.Create())
+            rng.GetNonZeroBytes(passwordSalt);
+
+        byte[] passwordHash = _authHelper.GetPasswordHash(password, passwordSalt);
+
+        var parameters = new 
+        {
+            @id = userId,
+            passwordHash, 
+            passwordSalt
+        };  
+
+        _dapper.Execute("Spu_UserUpsert", parameters);
     }
 }

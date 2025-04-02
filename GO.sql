@@ -1,7 +1,20 @@
 USE Travidia
 
+DROP TABLE IF EXISTS TripExpense
+DROP TABLE IF EXISTS ExpenseType
+DROP TABLE IF EXISTS Request
+DROP TABLE IF EXISTS RequestStep
+DROP TABLE IF EXISTS RequestFlow
+DROP TABLE IF EXISTS System
+DROP TABLE IF EXISTS [Status]
 DROP TABLE IF EXISTS TripRequest
 DROP TABLE IF EXISTS Trip
+
+CREATE TABLE [Status] (
+    id INT NOT NULL IDENTITY(1,1) PRIMARY KEY, 
+    name VARCHAR(45) NOT NULL
+)
+INSERT INTO [Status] (name) VALUES ('New'), ('Submited'), ('Rejected'), ('Approved'), ('OnHold')
 
 CREATE TABLE Trip (
     id INT NOT NULL IDENTITY(1,1) PRIMARY KEY, 
@@ -11,21 +24,20 @@ CREATE TABLE Trip (
     origin VARCHAR(60) NOT NULL, 
     purpose TEXT NOT NULL,
     originatorId INT NOT NULL, 
-    FOREIGN KEY (originatorId) REFERENCES [User] (id)
+    statusId INT NOT NULL DEFAULT 1,
+    FOREIGN KEY (originatorId) REFERENCES [User] (id), 
+    FOREIGN KEY (statusId) REFERENCES [Status] (id)
 )
-
 CREATE TABLE System (
     id INT NOT NULL IDENTITY(1,1) PRIMARY KEY, 
     name VARCHAR(45) NOT NULL
 )
-
 CREATE TABLE RequestFlow (
     id INT NOT NULL IDENTITY(1,1) PRIMARY KEY, 
     name VARCHAR(45) NOT NULL, 
     systemId INT NOT NULL, 
     FOREIGN KEY (SystemId) REFERENCES System (id)
 )
-
 CREATE TABLE RequestStep (
     id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
     requestFlowId INT NOT NULL, 
@@ -40,8 +52,6 @@ CREATE TABLE RequestStep (
     FOREIGN KEY (rolId) REFERENCES Rol (id), 
     FOREIGN KEY (userId) REFERENCES [User] (id)
 )
-
-DROP TABLE IF EXISTS Request
 CREATE TABLE Request (
     id INT NOT NULL IDENTITY(1,1) PRIMARY KEY,
     itemId INT NOT NULL, 
@@ -55,12 +65,10 @@ CREATE TABLE Request (
     FOREIGN KEY (rolId) REFERENCES Rol (id), 
     FOREIGN KEY (userId) REFERENCES [User] (id)
 )
-
 CREATE TABLE ExpenseType (
     id INT NOT NULL IDENTITY(1,1) PRIMARY KEY, 
     name VARCHAR(45) NOT NULL
 )
-
 CREATE TABLE TripExpense (
     id INT NOT NULL IDENTITY(1,1) PRIMARY KEY, 
     tripId INT NOT NULL, 
@@ -72,20 +80,24 @@ CREATE TABLE TripExpense (
 )
 
 GO
-CREATE OR ALTER PROCEDURE Spu_UserUpset
+USE Travidia
+GO
+CREATE OR ALTER PROCEDURE Spu_UserUpsert
     @id INT = NULL, 
     @fullName VARCHAR(80) = NULL, 
     @email VARCHAR(100) = NULL, 
     @rolId INT = NULL, 
     @departmentId INT = NULL,
     @passwordHash VARBINARY(MAX) = NULL, 
-    @passwordSalt VARBINARY(MAX) = NULL
+    @passwordSalt VARBINARY(MAX) = NULL,
+    @supervisorId INT = NULL, 
+    @active BIT = NULL
 AS
 BEGIN
     IF NOT EXISTS (SELECT * FROM [User] WHERE id = @id)
     BEGIN
-        INSERT INTO [User] (fullName, email, rolId, departmentId, passwordHash, passwordSalt)
-        VALUES (@fullName, @email, @rolId, @departmentId, @passwordHash, @passwordSalt)
+        INSERT INTO [User] (fullName, email, rolId, departmentId, passwordHash, passwordSalt, supervisorId)
+        VALUES (@fullName, @email, @rolId, @departmentId, @passwordHash, @passwordSalt, @supervisorId)
     END
     ELSE
     BEGIN
@@ -95,7 +107,9 @@ BEGIN
             rolId = COALESCE(@rolId, rolId), 
             departmentId = COALESCE(@departmentId, departmentId),
             passwordHash = COALESCE(@passwordHash, passwordHash),
-            passwordSalt = COALESCE(@passwordSalt, passwordSalt)
+            passwordSalt = COALESCE(@passwordSalt, passwordSalt), 
+            supervisorId = COALESCE(@supervisorId, supervisorId),
+            active = COALESCE(@active, active)
         WHERE id = @id
     END
 END

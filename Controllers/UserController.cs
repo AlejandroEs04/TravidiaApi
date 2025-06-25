@@ -23,6 +23,7 @@ public class UserController(IConfiguration config) : ControllerBase
         return users;
     }
 
+    [AllowAnonymous]
     [HttpPost]
     public IActionResult CreateUser(CreateUserDto user)
     {
@@ -37,16 +38,18 @@ public class UserController(IConfiguration config) : ControllerBase
             byte[] passwordHash = _authHelper.GetPasswordHash(user.Password, passwordSalt);
 
             var parameters = new {
-                @fullName = user.FullName,
+                @name = user.Name,
+                @lastName = user.LastName,
                 @email = user.Email,
                 @rolId = user.RolId,
                 @departmentId = user.DepartmentId,
+                @titleId = user.TitleId,
+                @areaId = user.AreaId,
                 passwordHash,
-                passwordSalt, 
-                @supervisorId = user.SupervisorId
+                passwordSalt
             };
 
-            _dapper.Execute("Spu_UserUpsert", parameters);
+            _dapper.Execute("User_upsert", parameters);
 
             return Ok();
         }
@@ -64,14 +67,16 @@ public class UserController(IConfiguration config) : ControllerBase
             var parameters = new 
             {
                 @id = userId,
-                @fullName = user.FullName,
+                @name = user.Name,
+                @lastName = user.LastName,
                 @email = user.Email,
                 @rolId = user.RolId,
-                @departmentId = user.DepartmentId, 
-                @supervisorId = user.SupervisorId
+                @departmentId = user.DepartmentId,
+                @titleId = user.TitleId,
+                @areaId = user.AreaId,
             };
 
-            _dapper.Execute("Spu_UserUpsert", parameters);
+            _dapper.Execute("User_upsert", parameters);
 
             if(user.Password.Length > 0) UpdatePassword(user.Password, userId);
         }
@@ -94,7 +99,7 @@ public class UserController(IConfiguration config) : ControllerBase
                 @active = false
             };
 
-            _dapper.Execute("Spu_UserUpsert", parameters);
+            _dapper.Execute("User_upsert", parameters);
         }
         catch (Exception)
         {
@@ -119,6 +124,6 @@ public class UserController(IConfiguration config) : ControllerBase
             passwordSalt
         };  
 
-        _dapper.Execute("Spu_UserUpsert", parameters);
+        _dapper.Execute("User_upsert", parameters);
     }
 }

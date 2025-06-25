@@ -1,17 +1,12 @@
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
 namespace Travidia.Models;
 
 public class Request
 {
     public int Id { get; set; }
-    public int ItemId { get; set; }
-    public int RequestStepId { get; set; }
-    public bool? Response { get; set; }
-    public int? DepartmentId { get; set; }
-    public int? RolId { get; set; }
-    public int? UserId { get; set; }
-    public DateTime? ResponsedAt { get; set; }
+    public int OriginatorId { get; set; }
+    public int DocumentId { get; set; }
+    public DateTime CreatedAt { get; set; }
+    public DateTime UpdatedAt { get; set; }
+    public DateTime SubmittedAt { get; set; }
+    public int StatusId { get; set; }
 }

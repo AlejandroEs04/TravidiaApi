@@ -1,9 +1,9 @@
 namespace Travidia.Dtos;
 
-public class CreateTripDto
+public class TripCreateDto
 {
     public DateTime DepartureDate { get; set; }
-    public DateTime ReturnDate { get; set; }
+    public DateTime ReturnedDate { get; set; }
     public string Destiny { get; set; } = "";
     public string Origin { get; set; } = "";
     public string Purpose { get; set; } = "";

@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- https://go.microsoft.com/fwlink/?LinkID=208121. -->
+<Project>
+  <PropertyGroup>
+    <_PublishTargetUrl>\\192.168.1.254\Travidia</_PublishTargetUrl>
+    <History>True|2025-04-05T21:58:15.9095077Z||;False|2025-04-05T15:53:00.7224837-06:00||;False|2025-04-05T15:52:36.6764957-06:00||;False|2025-04-05T15:52:11.4782416-06:00||;</History>
+    <LastFailureDetails />
+  </PropertyGroup>
+</Project>

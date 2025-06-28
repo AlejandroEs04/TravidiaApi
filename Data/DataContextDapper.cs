@@ -2,9 +2,15 @@ using System.Data;
 using Dapper;
 using Microsoft.Data.SqlClient;
 
-class DataContextDapper(IConfiguration config)
+public class DataContextDapper
 {
-    private readonly IConfiguration _config = config;
+    private readonly IConfiguration _config;
+
+    public DataContextDapper(IConfiguration config)
+    {
+        _config = config;
+    }
+
 
     public IEnumerable<T> Query<T>(string query, object? parameters = null)
     {

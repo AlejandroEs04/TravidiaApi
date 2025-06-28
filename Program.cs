@@ -15,6 +15,8 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.AddScoped<DataContextDapper>();
+
 // Setting cors 
 builder.Services.AddCors((options) => {
     // Development enviroment cors origin

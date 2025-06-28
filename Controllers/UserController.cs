@@ -11,16 +11,16 @@ namespace Travidia.Controllers;
 [Authorize]
 [ApiController]
 [Route("[controller]")]
-public class UserController(IConfiguration config) : ControllerBase
+public class UserController(IConfiguration config, DataContextDapper dapper) : ControllerBase
 {
-    private readonly DataContextDapper _dapper = new (config);
+    private readonly DataContextDapper _dapper = dapper;
     private readonly AuthHelper _authHelper = new (config);
 
     [HttpGet]
-    public IEnumerable<UserDto> GetUsers()
+    public IActionResult GetUsers()
     {
         var users = _dapper.Query<UserDto>("SELECT * FROM [User]");
-        return users;
+        return Ok(users);
     }
 
     [AllowAnonymous]

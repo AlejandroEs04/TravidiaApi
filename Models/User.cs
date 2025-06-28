@@ -13,4 +13,25 @@ public class User
     public byte[] PasswordHash { get; set; } = [];
     public byte[] PasswordSalt { get; set; } = [];
     public int SupervisorId { get; set; }
+
+    private readonly DataContextDapper? _dapper;
+
+    public User() { }
+
+    public User(DataContextDapper? dapper = null)
+    {
+        _dapper = dapper;
+    }
+
+    public User? GetUserById(int id)
+    {
+        if (_dapper is null)
+            throw new NullReferenceException("Dapper is not available");
+
+        string queryUser = "SELECT * FROM [User] WHERE id = @id";
+        var user = _dapper.QuerySingle<User>(queryUser, new { id });
+        return user;
+    }
+
+    public static bool IsUserOwner(int userId, int originatorId) => userId == originatorId;
 }

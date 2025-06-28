@@ -9,9 +9,9 @@ namespace Travidia.Controllers;
 [Authorize]
 [ApiController]
 [Route("[controller]")]
-public class AuthController(IConfiguration config) : ControllerBase
+public class AuthController(IConfiguration config, DataContextDapper dapper) : ControllerBase
 {
-    private readonly DataContextDapper _dapper = new(config);
+    private readonly DataContextDapper _dapper = dapper;
     private readonly AuthHelper _authHelper = new(config);
 
     [AllowAnonymous]

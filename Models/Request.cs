@@ -7,6 +7,6 @@ public class Request
     public int DocumentId { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
-    public DateTime SubmittedAt { get; set; }
+    public DateTime? SubmittedAt { get; set; }
     public int StatusId { get; set; }
 }

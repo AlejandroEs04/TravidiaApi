@@ -45,11 +45,24 @@ public class DocumentController(DataContextDapper dapper) : ControllerBase
                     @titleId = step.TitleId,
                     @departmentId = step.DepartmentId,
                     @areaId = step.AreaId,
-                    @order = step.Order, 
+                    @order = step.Order,
                     @documentId = newDocument.Id
                 };
             }
 
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpPut("{id}")]
+    public IActionResult UpdateDocument(int id)
+    {
+        try
+        {
             return Ok();
         }
         catch (Exception ex)
